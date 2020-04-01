@@ -5,15 +5,15 @@ Python Tool showing a linear fit for logarithmic data of time series COVID-19 in
 
 2.  Example Commands 
 
-python covid19_linear_plot.py --province_state Quebec --url https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+    python covid19_linear_plot.py --province_state Quebec --url https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
 --start_date Feb/29/2020 --end_date Mar/31/2020
 
-Abbreviated command format:
+    Abbreviated command format:
 
-covid19_linear_plot.py -p Quebec -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+    covid19_linear_plot.py -p Quebec -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
 -s Feb/29/2020 -e Mar/31/2020
 
-For help instructions, run python covid19_linear_plot.py -h
+    For help instructions: run python covid19_linear_plot.py -h
 
 3.  Start and End date parameters are optional.  If you do enter start and end dates, you must enter start and end dates that fall within the date range of the data, see the time series data at 
 https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
