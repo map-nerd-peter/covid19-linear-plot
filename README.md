@@ -25,11 +25,11 @@ Start and end dates need to be entered in the format of month/day/year or month-
 
 * March 1 - 24, 2020 shows exponent b value of 0.29 (a higher value shows sharper exponent curve) and population doubling time of 2.4. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown.
 
-  ![Quebec March 1 to 24 2020](example_plots/Quebec_March_1_24_2020.png)
+  [(https://github.com/map-nerd-peter/covid19_linear_plot/blob/master/example_plots/Quebec_March_1_24_2020.png)]
 
 
 * March 25 - 31, 2020 shows exponent b value of  0.19 (this value is lower than the March 1-24 b value so it indicate flattening curve of infection rates), and population doubling time is 3.7. These values show that mitigation efforts (e.g. locking down of communities, encouraging social distancing, etc.) are working to reduce exponential growth of infections.
   
   NOTE: The fitted line in this plot looks "steeper" than the March 1-24 fitted line because this plot has fewer data points. The exponent b value and population doubling time values are better indicators of curve flattening than the graphical reprsentation in this line.  
   
-  ![Quebec March 25 to 31 2020](example_plots/Quebec_March_25-31_2020.png)
+  [(https://github.com/map-nerd-peter/covid19_linear_plot/blob/master/example_plots/Quebec_March_25_31_2020.png)]
