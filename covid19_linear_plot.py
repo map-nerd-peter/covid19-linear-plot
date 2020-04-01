@@ -11,7 +11,7 @@ class Covid19Data:
     def __init__(self, location, url, province_state_selected):
         """Constructor"""
 
-        self._location = location.upper()
+        self._location = location
         self._url = url
 
         #Load the row that contains the province or state COVID-19 case data
