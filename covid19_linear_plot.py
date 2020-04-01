@@ -5,7 +5,16 @@ import datetime
 from dateutil.parser import parse
 import pandas as pd
 
-#User provides region and url for this class
+"""
+
+COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curve Flattening
+
+Written by Peter C. (https://github.com/map-nerd-peter/covid19_linear_plot)
+
+Special thanks to Valeriu Predoi for sharing statistical calculations and plotting analysis code 
+in his Covid-19 Exponential Phase tool - https://github.com/valeriupredoi/COVID-19_LINEAR/.
+
+"""
 class Covid19Data:
 
     def __init__(self, location, url, province_state_selected):
