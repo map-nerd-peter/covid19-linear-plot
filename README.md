@@ -23,13 +23,13 @@ Start and end dates need to be entered in the format of month/day/year or month-
 
 * __Requirements:__ Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
-* Example plots of COVID-19 cases in Quebec based on different dates:
+* __Example plots of COVID-19 cases in Quebec based on different dates__:
 
-* __Quebec reported cases for March 1 - 24, 2020__ show exponent b value of 0.29 (higher value indicates sharper (faster) exponential growthj) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown.
+* __Quebec reported cases for March 1 - 24, 2020__ show exponent b value of 0.29 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown.
 
   ![Quebec1](example_plots/Quebec_March_1_24_2020.png)
 
-* __March reported cases for March 25 - 31, 2020__ show exponent b value of  0.19 (this value is lower than the March 1-24 b value so it indicate flattening curve of infection rates), and population doubling time is 3.7 days. These values show that mitigation efforts (e.g. locking down of communities, encouraging social distancing, etc.) are working to reduce exponential growth of infections.
+* __March reported cases for March 25 - 31, 2020__ show exponent b value of  0.19 (this value is lower than the March 1-24 b value so it indicates flattening curve of infection rates), and population doubling time is 3.7 days. The doubling time of infections is slower during this time period. These values show that mitigation efforts (e.g. locking down of communities, encouraging social distancing, etc.) are working to reduce exponential growth of infections.
   
   NOTE: The fitted line in this plot looks "steeper" than the March 1-24 fitted line because this plot has fewer data points. In this case, the exponent b value and population doubling time value are better indicators of curve flattening than the graphical line representation.  
   
