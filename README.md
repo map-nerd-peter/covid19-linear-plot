@@ -21,7 +21,7 @@ COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curv
 https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
 Start and end dates need to be entered in the format of month/day/year or month-day-year.
 
-* Requirements: Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool] (https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
+* __Requirements:__ Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
 * Example plots of COVID-19 cases in Quebec based on different dates:
 
