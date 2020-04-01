@@ -1,5 +1,7 @@
-Python Tool showing a linear fit of logarithmic data of COVID-19 time series data from Johns Hopkins University:
-==================================================================================================================================
+COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curve Flattening
+==============================================================================================
+
+* This tool shows a linear fit of logarithmic data of COVID-19 time series data from Johns Hopkins University, with analysis of exponential growth parameters (during the start of the Covid-19 Pandemic).
 
 * The data can be pulled from the GitHub COVID-19 data repository of Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of flattening of the curve: N=Ce^(bt) at different time periods, and population doubling time.  Different start and end times can be added to visualize the levels "flattening" of the Covid-19 cases during different time periods.
 
