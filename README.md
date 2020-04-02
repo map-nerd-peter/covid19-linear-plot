@@ -3,7 +3,7 @@ COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curv
 
 * This tool shows a linear fit of logarithmic data of COVID-19 time series data from Johns Hopkins University, with analysis of exponential growth parameters (useful for analyzing the start of the Covid-19 Pandemic in different places).
 
-* The data can be pulled from the GitHub COVID-19 data repository of Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of flattening of the curve: N=Ce^(bt) at different time periods, and population doubling time.  Different start and end times can be added to visualize the levels "flattening" of the Covid-19 cases during different time periods.
+* It analyzes COVID-19 data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of flattening of the curve: N=Ce^(bt) at different time periods and population doubling time.  Different start and end times can be added to visualize the levels "flattening" of the Covid-19 cases during different time periods.
 
 * Example Commands:
 
@@ -23,7 +23,7 @@ Start and end dates need to be entered in the format of month/day/year or month-
 
 * __Requirements:__ Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
-* __Example plots of COVID-19 cases in Quebec based on different dates__:
+* __Example plots of COVID-19 cases in Quebec, Canada, based on different dates__:
 
   __Quebec reported cases for March 1 - 24, 2020__ show exponent b value of 0.29 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown.
 
