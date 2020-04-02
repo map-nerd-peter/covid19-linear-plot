@@ -29,7 +29,7 @@ Start and end dates need to be entered in the format of month/day/year or month-
 
   ![Quebec1](example_plots/Quebec_March_1_24_2020.png)
 
-  __Quebec reported cases for March 25 - 31, 2020__ show exponent b value of  0.19 (this value is lower than the March 1-24 b value so it indicates flattening curve of infection rates), and population doubling time is 3.7 days. The doubling time of infections is slower during this time period. These values show that mitigation efforts (e.g. locking down of communities, encouraging social distancing, etc.) are working to reduce exponential growth of infections.
+  __Quebec reported cases for March 25 - 31, 2020__ show exponent b value of  0.19 (this value is lower than the March 1-24 b value so it indicates flattening curve of infection rates), and population doubling time is 3.7 days. The doubling time of infections is also longer in this time period than the March 1-24 timer period. These values show that mitigation efforts (e.g. locking down of communities, encouraging social distancing, etc.) are working to reduce exponential growth of infections.
   
   NOTE: The fitted line in this plot looks "steeper" than the March 1-24 fitted line because this plot has fewer data points. In this case, the exponent b value and population doubling time value are better indicators of curve flattening than the graphical line representation.  
   
