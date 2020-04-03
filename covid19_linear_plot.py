@@ -148,29 +148,28 @@ class Covid19Data:
         print('Natural Log of Covid-19 Infection values')
         print(ln_y1)
 
-        coef1 = np.polyfit(x1, ln_y1, 1)
-        poly1d_fn1 = np.poly1d(coef1)
+        coef = np.polyfit(x1, ln_y1, 1)
+        poly1d_fn1 = np.poly1d(coef)
 
         # statistical parameters first line 
-        R1 = self.coeff_determination(ln_y1, poly1d_fn1(x1))  # R squared
-        yerr1 = poly1d_fn1(x1) - ln_y1  # error
+        R = self.coeff_determination(ln_y1, poly1d_fn1(x1))  # R squared
+        y_error = poly1d_fn1(x1) - ln_y1  # error
         
-        slope1 = coef1[0]  # slope
-        d_time1 = np.log(2.) / slope1  # doubling time
-        R01 = np.exp(slope1) - 1
+        slope = coef[0]  # slope
+        d_time = np.log(2.) / slope  # doubling time
+        R0 = np.exp(slope) - 1 #daily reproductive number
 
         plot_suptitle = "Linear Fit of " + \
                         "log cases $N=Ce^{bt}$ with " + \
-                        "$b=$%.2f day$^{-1}$ (red, %s)" % (slope1, self.location) + "\n" + \
-                        "Coefficient of determination (R-Squared)=%.3f" % R1 + "\n" + \
-                        "Population Doubling time: %.1f days" % d_time1 + "\n" + \
-                        "Estimated Daily $R_0=$%.1f" % R01
+                        "$b=$%.2f day$^{-1}$ (red, %s)" % (slope, self.location) + "\n" + \
+                        "Coefficient of determination (R-Squared)=%.3f" % R + "\n" + \
+                        "Population Doubling time: %.1f days" % d_time + "\n" + \
+                        "Estimated Daily $R_0 (Reproductive Number)=$%.1f" % R0
 
-        plot_title1 = ''
-        print('Slope value %.2f' %slope1)
-        print(R1)
-        print(d_time1)
-        print(R01)
+        print('Slope value %.2f' %slope)
+        print(R)
+        print(d_time)
+        print(R0)
 
         if start_end_dates[0] is None:
             start_date_label = self.csv_row_data.columns[4]
@@ -179,16 +178,16 @@ class Covid19Data:
 
         # plotting
         plt.plot(x1, ln_y1, 'yo', x1, poly1d_fn1(x1), '--r', label=self.location)
-        plt.errorbar(x1, ln_y1, yerr=yerr1, fmt='o', color='r')
+        plt.errorbar(x1, ln_y1, yerr=y_error, fmt='o', color='r')
         plt.grid()
-        plt.axvline(27, color='red')
+        #plt.axvline(27, color='red')
         plt.yticks(ln_y1, [np.int(y) for y in y01_plot_data])
 
         plt.xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
         plt.ylabel("Number of reported cases on given day DD")
         plt.suptitle("COVID-19 Epidemic in %s" %(self.location))
         plt.title(plot_suptitle)
-        plt.text(0.12, 0.85, plot_title1, fontsize=10)
+        #plt.text(0.12, 0.85, plot_title1, fontsize=10)
         plt.legend(loc="lower left")
         
         #Uncomment these 2 lines to save to an image file
