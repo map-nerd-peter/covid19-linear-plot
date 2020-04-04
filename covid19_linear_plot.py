@@ -227,12 +227,15 @@ def main():
 
         if not args.province_state and not args.url or not args.country_region and not args.url:
             print('Please provide a URL of the data file plus location (province, state, region, or country).')
+            print('Instructions are available by typing: python covid19_linear_plot.py --help')
             return
         if not args.url:
             print('Please provide the URL of the data file.')
+            print('Instructions are available by typing: python covid19_linear_plot.py --help')      
             return            
         if not args.province_state and not args.country_region:
             print('Please provide a province/state or country/region.')
+            print('Instructions are available by typing: python covid19_linear_plot.py --help')            
             return
         start_date = None
         end_date = None
