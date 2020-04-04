@@ -1,7 +1,7 @@
 COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve Flattening
 ==========================================================================================
 
-* This tool shows a linear fit of logarithmic COVID-19 historical data from Johns Hopkins University, with analysis of exponential growth parameters (useful for analyzing the start of the Covid-19 Pandemic in different places).
+* This tool shows a linear fit of logarithmic COVID-19 historical data from Johns Hopkins University, with analysis of exponential growth parameters. It is useful for analyzing the start of the Covid-19 Pandemic at the country-level or province/state level.
 
 * It analyzes the COVID-19 time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of flattening of the curve: N=Ce^(bt) at different time periods, daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the levels "flattening" of the Covid-19 cases at different time periods.
 
@@ -14,6 +14,9 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
     Abbreviated command:
 
     `covid19_linear_plot.py -p Quebec -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv -s Feb/29/2020 -e Mar/31/2020`
+    
+    Plot the data for a country:
+    `python covid19_linear_plot.py -c US -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv -s Mar/01/2020 -e Mar/31/2020`
 
     For help/instructions:
     
@@ -25,14 +28,21 @@ Start and end dates need to be entered in the format of month/day/year or month-
 
 * __Software Requirements:__ Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. 
 
-* __Example plots of COVID-19 cases in Quebec, Canada, based on different dates__:
+* __Example plots of COVID-19 cases in Quebec, Canada, based on different dates:__
 
-  __Quebec reported cases for March 1 - 24, 2020__ show exponent b value of 0.29 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown.
+  __Quebec reported cases for March 1 - 24, 2020__ show exponent b value of 0.29 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown. This period also coincided with many Quebec residents [travelling on Spring Break vacations with their families and a rise in COVID-19 infections.](https://www.theglobeandmail.com/canada/article-why-quebecs-coronavirus-cases-have-skyrocketed/)
 
   ![Quebec1](example_plots/Quebec_March_1_24_2020.png)
 
-  __Quebec reported cases for March 25 - 31, 2020__ show exponent b value of  0.19 (this value is lower than the March 1-24 b value so it indicates flattening curve of infection rates), and population doubling time is 3.7 days. The doubling time of infections is also longer in this time period than the March 1-24 time period. These values show that mitigation efforts (e.g. locking down of communities, "stay at home" and mandatory social distancing requirements, etc.) are working to reduce exponential growth of infections.
+  __Quebec reported cases for March 25 - 31, 2020__ show exponent b value of  0.19 (value is lower than the March 1-24 b value so it indicates flattening curve of infection rates), and population doubling time is 3.7 days. The doubling time of infections is also longer in this time period than the March 1-24 time period. These values show that mitigation efforts (e.g. locking down of communities, "stay at home" and mandatory social distancing requirements, etc.) are working to reduce exponential growth of infections.
   
   NOTE: The fitted line in this plot looks "steeper" than the March 1-24 fitted line because this plot has fewer data points. In this case, the exponent b value and population doubling time value are better indicators of curve flattening than the graphical line representation.  
   
   ![Quebec2](example_plots/Quebec_March_25_31_2020.png)
+
+* __Country plot of COVID-19 cases in Italy for Mar/21/2020 to Apr/03/2020:__
+
+  Italy experienced a peak of confirmed new Covid-19 cases [on March 21, 2020 with 6557 new cases (53578 total confirmed cases).
+  ](https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv)  This plot shows the 2 week period starting from March 21, 2020 and indicates the curve flattening with a small b value (slope value) of 0.06 and a population doubling time of 11.3 days. 
+  
+  ![Italy](Italy_March_21_April_3_2020.png)
