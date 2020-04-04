@@ -23,14 +23,15 @@ class Covid19Data:
         self._location = location
         self._url = url
 
-        #Load the row that contains the province or state COVID-19 case data
+        #Load the row that contains for specific state or province and its COVID-19 data
         df = pd.read_csv(url, error_bad_lines=False)
+
         if province_state_selected:
             self._csv_row_data = df[df['Province/State'] == location]
 
-        #Future feature to get country/region data    
+        #Get country data
         elif not province_state_selected:
-            self._csv_row_data =df[df['Country/Region'] == location]
+            self._csv_row_data = df[df['Country/Region'] == location].groupby('Country/Region').sum()
 
     @property
     def location(self):
@@ -115,8 +116,13 @@ class Covid19Data:
         else:
             return (None, None)
 
-    #This function modifies Valeriu Predoi's original code at https://github.com/valeriupredoi/COVID-19_LINEAR
     def plot_covid19_data(self, start_end_dates):
+        """ Plot COVID19 data based on statistical calculations.
+            Uses some of Valeriu Predoi's statistical calcuations and plotting code from https://github.com/valeriupredoi/COVID-19_LINEAR
+        Parameters:
+            start_end_dates
+                Tuple containing index position of start date and index position of end date.
+        """
 
         start_idx = None
         end_idx = None
@@ -133,7 +139,8 @@ class Covid19Data:
         elif start_idx is not None and end_idx is not None:
             y01_plot_data = self.csv_row_data.iloc[0, start_idx:end_idx]
         elif start_idx is None and end_idx is not None:
-            y01_plot_data = self.csv_row_data.iloc[0, :end_dx]
+            y01_plot_data = self.csv_row_data.iloc[0, :end_idx]
+        #No start date and end dates given.    
         else:
             y01_plot_data = self.csv_row_data.iloc[0, 4:]
 
@@ -180,14 +187,11 @@ class Covid19Data:
         plt.plot(x1, ln_y1, 'yo', x1, poly1d_fn1(x1), '--r', label=self.location)
         plt.errorbar(x1, ln_y1, yerr=y_error, fmt='o', color='r')
         plt.grid()
-        #plt.axvline(27, color='red')
         plt.yticks(ln_y1, [np.int(y) for y in y01_plot_data])
-
         plt.xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
         plt.ylabel("Number of reported cases on given day DD")
         plt.suptitle("COVID-19 Epidemic in %s" %(self.location))
         plt.title(plot_suptitle)
-        #plt.text(0.12, 0.85, plot_title1, fontsize=10)
         plt.legend(loc="lower left")
         
         #Uncomment these 2 lines to save to an image file
@@ -221,15 +225,14 @@ def main():
                             help='End date in the COVID-19 data, can be entered as M-DD-YY such as 1-31-20 for January 31, 2020')    
         args = parser.parse_args()
 
-        if not args.province_state:
-            print('Please provide a province/state.')
+        if not args.province_state and not args.url or not args.country_region and not args.url:
+            print('Please provide a URL of the data file plus location (province, state, region, or country).')
             return
-        '''Future feature to check for numbers from countries
-        if not args.province_state and not args.country_region:
-            print('Please provide a province/state or country/region.')
-            return'''
         if not args.url:
             print('Please provide the URL of the data file.')
+            return            
+        if not args.province_state and not args.country_region:
+            print('Please provide a province/state or country/region.')
             return
         start_date = None
         end_date = None
@@ -241,7 +244,6 @@ def main():
             data = Covid19Data(args.province_state, args.url, province_state_selected = True)
         elif args.country_region and args.url:
             data = Covid19Data(args.country_region, args.url, province_state_selected = False)
-        #data = Covid19Data('Quebec', 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
         data.plot_covid19_data(data.set_start_end_dates(start_date, end_date))
 
 if __name__ == '__main__':
