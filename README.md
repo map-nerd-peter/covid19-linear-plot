@@ -45,4 +45,4 @@ Start and end dates need to be entered in the format of month/day/year or month-
   Italy experienced a peak of confirmed new Covid-19 cases [on March 21, 2020 with 6557 new cases (53578 total confirmed cases).
   ](https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv)  This plot shows the 2 week period starting from March 21, 2020 and indicates the curve flattening with a small b value (slope value) of 0.06 and a population doubling time of 11.3 days. 
   
-  ![Italy](Italy_March_21_April_3_2020.png)
+  ![Italy](example_plots/Italy_March_21_April_3_2020.png)
