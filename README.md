@@ -3,7 +3,7 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 * This tool shows a linear fit of logarithmic COVID-19 (SARS-CoV-2) historical data from Johns Hopkins University, with analysis of exponential growth parameters. It is useful for analyzing the start of the Covid-19 Pandemic at the country-level or at province/state level.
 
-* It analyzes the COVID-19 time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of flattening of the curve: N=Ce^(bt) at different time periods, daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the levels "flattening" of the Covid-19 cases at different time periods.
+* It analyzes the COVID-19 time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of steepening or flattening of the curve (N=Ce^(bt)) at different time periods, daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the levels "flattening" of the Covid-19 cases at different time periods.
 
 * This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
@@ -24,7 +24,7 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 * Start and End date parameters are optional.  You must enter start and end dates that fall within the date range of the time series data. See data source at 
 https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
-Start and end dates need to be entered in the format of month/day/year or month-day-year.
+Start and end dates need to be entered in the format of month/day/year or month-day-year. It's best to enter time periods of 7 to 10 days to obtain a good line fit, but longer time periods will also work.
 
 * __Software Requirements:__ Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. 
 
