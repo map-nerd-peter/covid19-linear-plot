@@ -171,7 +171,7 @@ class Covid19Data:
                         "$b=$%.3f day$^{-1}$ (red, %s)" % (slope, self.location) + "\n" + \
                         "Coefficient of determination (R-Squared)=%.3f" % R + "\n" + \
                         "Population Doubling time: %.2f days" % d_time + "\n" + \
-                        "Estimated Daily $R_0 (Reproductive Number. Estimate Only)=$%.2f" % R0
+                        "Estimated Daily $R_0 (Reproductive Number)=$%.2f" % R0
 
         print('Slope value %.3f' %slope)
         print('R Squared Value %.3f' %R)
