@@ -168,15 +168,15 @@ class Covid19Data:
 
         plot_suptitle = "Linear Fit of " + \
                         "log cases $N=Ce^{bt}$ with " + \
-                        "$b=$%.2f day$^{-1}$ (red, %s)" % (slope, self.location) + "\n" + \
+                        "$b=$%.3f day$^{-1}$ (red, %s)" % (slope, self.location) + "\n" + \
                         "Coefficient of determination (R-Squared)=%.3f" % R + "\n" + \
-                        "Population Doubling time: %.1f days" % d_time + "\n" + \
-                        "Estimated Daily $R_0 (Reproductive Number)=$%.1f" % R0
+                        "Population Doubling time: %.2f days" % d_time + "\n" + \
+                        "Estimated Daily $R_0 (Reproductive Number. Estimate Only)=$%.2f" % R0
 
-        print('Slope value %.2f' %slope)
-        print(R)
-        print(d_time)
-        print(R0)
+        print('Slope value %.3f' %slope)
+        print('R Squared Value %.3f' %R)
+        print('Doubling time %.2f' %d_time)
+        print('R0 Value %.2f' %R0)
 
         if start_end_dates[0] is None:
             start_date_label = self.csv_row_data.columns[4]
