@@ -30,17 +30,17 @@ Start and end dates need to be entered in the format of month/day/year or month-
 
 * __Example plots of COVID-19 cases in Quebec, Canada, based on different dates:__
 
-  __Quebec reported cases for March 1 - 23, 2020__ show exponent b value(slope value) of 0.29 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown. This period also coincided with many Quebec residents [travelling on Spring Break vacations with their families and a rise in COVID-19 infections.](https://www.theglobeandmail.com/canada/article-why-quebecs-coronavirus-cases-have-skyrocketed/)
+  __Quebec reported cases for March 1 - 23, 2020__ show exponent b value(slope value) of 0.286 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.42 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown. This period also coincided with many Quebec residents [travelling on Spring Break vacations with their families and a rise in COVID-19 infections.](https://www.theglobeandmail.com/canada/article-why-quebecs-coronavirus-cases-have-skyrocketed/)
 
   ![Quebec1](example_plots/Quebec_March_1_23_2020.png "Click to see enlarged Quebec plot image")
 
-  __Quebec reported cases for March 24 - April 5, 2020__ show exponent b value of  0.16 (value is lower than the March 1-23 b value so it indicates a flattening curve of infections) and population doubling time is 4.2 days. The doubling time of infections is also longer in this time period than the March 1-23 time period. These values show that mitigation efforts (e.g. locking down of communities, "stay at home" and mandatory social distancing requirements, etc.) are working to reduce exponential growth of infections.
+  __Quebec reported cases for March 24 - April 5, 2020__ show exponent b value of  0.167 (value is lower than the March 1-23 b value so it indicates a flattening curve of infections). The population doubling time of infections of 4.15 days is longer in this time period than in the March 1-23 time period. These values show that mitigation efforts (e.g. locking down of communities, "stay at home" and mandatory social distancing requirements, etc.) are working to reduce exponential growth of infections.
    
   ![Quebec2](example_plots/Quebec_March_24_April_5_2020.png "Click to see enlarged Quebec plot image")
 
 * __Country plot of COVID-19 cases in Italy for March 21, 2020 to April 5, 2020:__
 
   Italy experienced a peak of confirmed new Covid-19 cases [on March 21, 2020 with 6557 new cases (53578 total confirmed cases).
-  ](https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv)  This plot shows the 2 week period starting from March 21, 2020 and indicates the curve flattening with a small b value (slope value) of 0.06 and a population doubling time of 12.1 days. 
+  ](https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv)  This plot shows the 2 week period starting from March 21, 2020 and indicates the curve flattening with a small b value (slope value) of 0.059 and a population doubling time greater than 11 days. 
   
   ![Italy](example_plots/Italy_March_21_April_5_2020.png "Click to see enlarged Italy plot image")
