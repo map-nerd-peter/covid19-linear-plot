@@ -166,7 +166,7 @@ class Covid19Data:
         d_time = np.log(2.) / slope  # doubling time
         R0 = np.exp(slope) - 1 #daily reproductive number
 
-        plot_suptitle = "Linear Fit of " + \
+        plot_title = "Linear Fit of " + \
                         "log cases $N=Ce^{bt}$ with " + \
                         "$b=$%.3f day$^{-1}$ (red, %s)" % (slope, self.location) + "\n" + \
                         "Coefficient of determination (R-Squared)=%.3f" % R + "\n" + \
@@ -190,8 +190,7 @@ class Covid19Data:
         plt.yticks(ln_y1, [np.int(y) for y in y01_plot_data])
         plt.xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
         plt.ylabel("Number of reported cases on given day DD")
-        plt.suptitle("COVID-19 Epidemic in %s" %(self.location))
-        plt.title(plot_suptitle)
+        plt.title("COVID-19 Epidemic in %s\n%s" %(self.location, %plot_title))
         plt.legend(loc="lower left")
         
         #Uncomment these 2 lines to save to an image file
