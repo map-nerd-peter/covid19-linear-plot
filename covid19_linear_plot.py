@@ -190,7 +190,7 @@ class Covid19Data:
         plt.yticks(ln_y1, [np.int(y) for y in y01_plot_data])
         plt.xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
         plt.ylabel("Number of reported cases on given day DD")
-        plt.title("COVID-19 Epidemic in %s\n%s" %(self.location, %plot_title))
+        plt.title("COVID-19 Epidemic in %s\n%s" %(self.location, plot_title))
         plt.legend(loc="lower left")
         
         #Uncomment these 2 lines to save to an image file
