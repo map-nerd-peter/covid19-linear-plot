@@ -69,12 +69,12 @@ class Covid19Data:
             except:
                 continue
 
-        #Set to %-m/%-d to remove 0 padded months and days for Python on Linux, or keep as %#m/%#d for Windows-based Python.
+        #Legacy code to determine if Python environment is Linux, Mac or Windows-based, to remove zero-padding from JHU data.
         if platform.system() == 'Windows':
-            JHU_CSV_Date_Format = '%#m/%#d/%y'
+            JHU_CSV_Date_Format = '%m/%d/%y'
             print('Using Python date format for Windows')
         elif platform.system() == 'Darwin' or platform.system() == 'Linux':
-            JHU_CSV_Date_Format = '%-m/%-d/%y'
+            JHU_CSV_Date_Format = '%m/%d/%y'
             print('Using Python date format for MacOS or Linux')
 
         if start_date is not None and end_date is None:
