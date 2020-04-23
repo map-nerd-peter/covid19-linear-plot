@@ -22,6 +22,7 @@ class Covid19Data:
 
         self._location = location
         self._url = url
+        self._csv_date_format = None
 
         #Load the row that contains for specific state or province and its COVID-19 data
         df = pd.read_csv(url, error_bad_lines=False)
@@ -32,6 +33,14 @@ class Covid19Data:
         #Get country data
         elif not province_state_selected:
             self._csv_row_data = df[df['Country/Region'] == location].groupby('Country/Region').sum()
+        
+        # Remove the zero padding from single digit date values so it matches JHU data. e.g. Feb. 9 2020 is shown as 2/9/20 in the csv data.
+        if platform.system() == 'Windows':
+            self._csv_date_format = '%#m/%#d/%y'
+            print('Using Python date format for Windows')
+        elif platform.system() == 'Darwin' or platform.system() == 'Linux':
+            self._csv_date_format = '%-m/%-d/%y'
+            print('Using Python date format for MacOS / Linux')
 
     @property
     def location(self):
@@ -44,6 +53,10 @@ class Covid19Data:
     @property 
     def csv_row_data(self):
        return self._csv_row_data
+    
+    @property
+    def csv_date_format(self):
+        return self._csv_date_format
 
     # Calculate Coefficient of Determination / r-squared. This function is based on Valeriu Predoi's code https://github.com/valeriupredoi/COVID-19_LINEAR
     def coeff_determination(self, ys_orig, ys_line):
@@ -69,17 +82,9 @@ class Covid19Data:
             except:
                 continue
 
-        #Legacy code to determine if Python environment is Linux, Mac or Windows-based, to remove zero-padding from JHU data.
-        if platform.system() == 'Windows':
-            JHU_CSV_Date_Format = '%m/%d/%y'
-            print('Using Python date format for Windows')
-        elif platform.system() == 'Darwin' or platform.system() == 'Linux':
-            JHU_CSV_Date_Format = '%m/%d/%y'
-            print('Using Python date format for MacOS or Linux')
-
         if start_date is not None and end_date is None:
 
-            start_date_col = start_date.strftime(JHU_CSV_Date_Format)
+            start_date_col = start_date.strftime(self.csv_date_format)
           
             try:
                 print(list(self.csv_row_data).index(start_date_col))
@@ -92,12 +97,12 @@ class Covid19Data:
 
         elif start_date is not None and end_date is not None:
 
-            start_date_col = start_date.strftime(JHU_CSV_Date_Format)
+            start_date_col = start_date.strftime(self.csv_date_format)
 
             try:
                 csv_start_idx = list(self.csv_row_data).index(start_date_col)
 
-                end_date_col = end_date.strftime(JHU_CSV_Date_Format)
+                end_date_col = end_date.strftime(self.csv_date_format)
                 csv_end_idx = list(self.csv_row_data).index(end_date_col)
                 return (csv_start_idx, csv_end_idx)
             except ValueError as e:
@@ -105,7 +110,7 @@ class Covid19Data:
 
         elif start_date is None and end_date is not None:
 
-            end_date_col = end_date.strftime(JHU_CSV_Date_Format)
+            end_date_col = end_date.strftime(self.csv_date_format)
             try:
                 csv_end_idx = list(self.csv_row_data).index(end_date_col)
                 return (None, csv_end_idx)
@@ -115,6 +120,14 @@ class Covid19Data:
         # User did not provide start date nor end date for plotting.
         else:
             return (None, None)
+
+    # Returns readable date, e.g. Mar/31/2020 instead of 03/31/20
+    def get_readable_date(self, csv_date):
+        try:
+            date_label = datetime.datetime.strptime(csv_date, '%m/%d/%y')
+            return datetime.datetime.strftime(date_label, '%b/%d/%Y') 
+        except:
+            return 'Invalid Date'
 
     def plot_covid19_data(self, start_end_dates):
         """ Plot COVID19 data based on statistical calculations.
@@ -179,9 +192,9 @@ class Covid19Data:
         print('R0 Value %.2f' %R0)
 
         if start_end_dates[0] is None:
-            start_date_label = self.csv_row_data.columns[4]
+            start_date_label = self.get_readable_date(self.csv_row_data.columns[4])
         else:
-            start_date_label = self.csv_row_data.columns[start_idx]
+            start_date_label = self.get_readable_date(self.csv_row_data.columns[start_idx])
 
         # plotting
         plt.plot(x1, ln_y1, 'yo', x1, poly1d_fn1(x1), '--r', label=self.location)
@@ -197,7 +210,6 @@ class Covid19Data:
         #plot_name = "COVID-19_LIN_{}.png".format(self.location)
         #plt.savefig(plot_name)
         plt.show()
-
 
 def main():
 
