@@ -5,6 +5,7 @@ import datetime
 from dateutil.parser import parse
 import pandas as pd
 import platform
+import collections
 """
 
 COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curve Flattening
@@ -129,16 +130,22 @@ class Covid19Data:
         except:
             return 'Invalid Date'
 
-    def plot_covid19_data(self, start_end_dates):
-        """ Plot COVID19 data based on statistical calculations.
-            Uses some of Valeriu Predoi's statistical calcuations and plotting code from https://github.com/valeriupredoi/COVID-19_LINEAR
+    # Get the csv data based on start and end dates, to use for plotting
+    def get_covid19_data(self, start_end_dates):
+        """ Get the covid19 data for Y and x axes and start dates.
+
         Parameters:
             start_end_dates
-                Tuple containing index position of start date and index position of end date.
+                Tuple containing column index of start date and column index of end date.
+        
+        Returns:
+            X axis data of the dates, Y axis data of the case numbers, and start date column
+                
         """
-
         start_idx = None
         end_idx = None
+
+        covid19_data = collections.namedtuple('covid19_data',['x01_plot_data', 'y01_plot_data', 'start_date_col']) 
 
         # Checks if start date and end date are provided. Start date is optional, and End date is also optional.
         if start_end_dates[0] is not None:
@@ -148,32 +155,40 @@ class Covid19Data:
             end_idx = start_end_dates[1]
 
         if start_idx is not None and end_idx is None:
-            y01_plot_data = self.csv_row_data.iloc[0,start_idx:]
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0,start_idx:]
         elif start_idx is not None and end_idx is not None:
-            y01_plot_data = self.csv_row_data.iloc[0, start_idx:end_idx]
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, start_idx:end_idx]
         elif start_idx is None and end_idx is not None:
-            y01_plot_data = self.csv_row_data.iloc[0, :end_idx]
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, :end_idx]
         #No start date and end dates given.    
         else:
-            y01_plot_data = self.csv_row_data.iloc[0, 4:]
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, 4:]
 
         #This provides the days on the X axis, e.g. Day 1, 2, 3, 4, 5, etc.
-        x1 = [np.float(x) for x in range(1, len(y01_plot_data)+1)]
+        covid19_data.x01_plot_data = [np.float(x) for x in range(1, len(covid19_data.y01_plot_data)+1)]
 
-        #y1 is the natural log of y01_plot_data values/case values
-        ln_y1 = np.asarray([y if y<=0  else np.log(y) for y in y01_plot_data])
+        covid19_data.start_date_col = start_idx
+        
+        return covid19_data
+
+    def plot(self, covid19_data):
+
+        # Plot data, using some of Valeriu Predoi's statistical calcuations and plotting code from https://github.com/valeriupredoi/COVID-19_LINEAR
+
+        # ln_y1 is the natural log of y01_plot_data. y01_plot_data contains daily case values
+        ln_y1 = np.asarray([y if y<=0  else np.log(y) for y in covid19_data.y01_plot_data])
 
         print('Abbreviated output of Covid-19 Infection Values')
-        print(y01_plot_data)
+        print(covid19_data.y01_plot_data)
         print('Natural Log of Covid-19 Infection values')
         print(ln_y1)
 
-        coef = np.polyfit(x1, ln_y1, 1)
+        coef = np.polyfit(covid19_data.x01_plot_data, ln_y1, 1)
         poly1d_fn1 = np.poly1d(coef)
 
         # statistical parameters first line 
-        R = self.coeff_determination(ln_y1, poly1d_fn1(x1))  # R squared
-        y_error = poly1d_fn1(x1) - ln_y1  # error
+        R = self.coeff_determination(ln_y1, poly1d_fn1(covid19_data.x01_plot_data))  # R squared
+        y_error = poly1d_fn1(covid19_data.x01_plot_data) - ln_y1  # error
         
         slope = coef[0]  # slope
         d_time = np.log(2.) / slope  # doubling time
@@ -191,24 +206,19 @@ class Covid19Data:
         print('Doubling time %.2f' %d_time)
         print('R0 Value %.2f' %R0)
 
-        if start_end_dates[0] is None:
+        if covid19_data.start_date_col is None:
             start_date_label = self.get_readable_date(self.csv_row_data.columns[4])
         else:
-            start_date_label = self.get_readable_date(self.csv_row_data.columns[start_idx])
+            start_date_label = self.get_readable_date(self.csv_row_data.columns[covid19_data.start_date_col])
 
-        # plotting
-        plt.plot(x1, ln_y1, 'yo', x1, poly1d_fn1(x1), '--r', label=self.location)
-        plt.errorbar(x1, ln_y1, yerr=y_error, fmt='o', color='r')
+        plt.plot(covid19_data.x01_plot_data, ln_y1, 'yo', covid19_data.x01_plot_data, poly1d_fn1(covid19_data.x01_plot_data), '--r', label=self.location)
+        plt.errorbar(covid19_data.x01_plot_data, ln_y1, yerr=y_error, fmt='o', color='r')
         plt.grid()
-        plt.yticks(ln_y1, [np.int(y) for y in y01_plot_data])
+        plt.yticks(ln_y1, [np.int(y) for y in covid19_data.y01_plot_data])
         plt.xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
         plt.ylabel("Number of reported cases on given day DD")
         plt.title("COVID-19 Epidemic in %s\n%s" %(self.location, plot_title))
         plt.legend(loc="lower left")
-        
-        #Uncomment these 2 lines to save to an image file
-        #plot_name = "COVID-19_LIN_{}.png".format(self.location)
-        #plt.savefig(plot_name)
         plt.show()
 
 def main():
@@ -258,7 +268,10 @@ def main():
             data = Covid19Data(args.province_state, args.url, province_state_selected = True)
         elif args.country_region and args.url:
             data = Covid19Data(args.country_region, args.url, province_state_selected = False)
-        data.plot_covid19_data(data.set_start_end_dates(start_date, end_date))
+        
+        start_and_end_dates = data.set_start_end_dates(start_date, end_date)
+        x_y_start_data = data.get_covid19_data(start_and_end_dates)
+        data.plot(x_y_start_data)
 
 if __name__ == '__main__':
     main()
