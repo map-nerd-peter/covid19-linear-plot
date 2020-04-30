@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import colors
 import argparse
 import datetime
 from dateutil.parser import parse
@@ -10,7 +11,7 @@ import collections
 
 COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curve Flattening
 
-Written by Peter C. (https://github.com/map-nerd-peter/covid19_linear_plot)
+Written by Peter C. (https://github.com/map-nerd-peter/covid19-linear-plot)
 
 Special thanks to Valeriu Predoi for sharing statistical calculations and plotting analysis code 
 in his Covid-19 Exponential Phase tool - https://github.com/valeriupredoi/COVID-19_LINEAR/.
@@ -69,19 +70,28 @@ class Covid19Data:
         return 1 - (squared_error_regr / squared_error_y_mean)
 
     def set_start_end_dates(self, start, end):
+        
         start_date = None
         end_date = None
-
         start_end_indices = None
         
         #Allow date in format of mm/dd/YYYY or mm/dd/yy feb/29/20 or feb/29/2020 etc.
         formats=['%m/%d/%Y', '%m/%d/%y', '%b/%d/%y', '%b/%d/%Y', '%B/%d/%Y', '%m-%d-%Y', '%m-%d-%y', '%b-%d-%y', '%b-%d-%Y', '%B-%d-%Y']
+
         for fmt in formats:
             try:
                 start_date = datetime.datetime.strptime(start, fmt)
+            except:
+                continue
+
+        #Try to parse end date separately as it could be different date format than start date.
+        for fmt in formats:
+            try:
                 end_date = datetime.datetime.strptime(end, fmt)
             except:
                 continue
+
+
 
         if start_date is not None and end_date is None:
 
@@ -139,13 +149,13 @@ class Covid19Data:
                 Tuple containing column index of start date and column index of end date.
         
         Returns:
-            X axis data of the dates, Y axis data of the case numbers, and start date column
+            X axis data of the dates, Y axis data of the case numbers, and start date column and end date column
                 
         """
         start_idx = None
         end_idx = None
 
-        covid19_data = collections.namedtuple('covid19_data',['x01_plot_data', 'y01_plot_data', 'start_date_col']) 
+        covid19_data = collections.namedtuple('covid19_data',['x01_plot_data', 'y01_plot_data', 'start_date_col', 'end_date_col']) 
 
         # Checks if start date and end date are provided. Start date is optional, and End date is also optional.
         if start_end_dates[0] is not None:
@@ -168,8 +178,26 @@ class Covid19Data:
         covid19_data.x01_plot_data = [np.float(x) for x in range(1, len(covid19_data.y01_plot_data)+1)]
 
         covid19_data.start_date_col = start_idx
-        
+        covid19_data.end_date_col = end_idx
+
         return covid19_data
+
+
+    #returns double image data for rendering to segmented red, orange, yellow to show the intensity of the virus' doubling time
+    #Returns a list of red orange yellow proportions
+    def get_doubling_time_cmap(self, doubling_time):
+        
+        if doubling_time <= 60:
+            return [(0.0, '#FF0000'), (0.5, '#FFA500'), (1.0, '#FFFF00')]
+
+        #Show more yellows to indicate less danger
+        elif doubling_time > 60 and doubling_time <= 365:
+            return [(0.0, '#FF0000'), (0.35, '#FFA500'), (0.75, '#FFFF00'), (1.0, '#FFFF80')]
+
+        #Show mostly yellows as doubling time is more than a year
+        elif doubling_time > 365:
+            return [(0.0, '#FF0000'), (0.1, '#FFA500'), (0.4, '#FFFF00'), (1.0, '#FFFF80')]
+            #return colors.LinearSegmentedColormap.from_list('custom roy', [(0.0, '#FF0000'), (0.2, '#FFA500'), (0.6, '#FFFF00')], N=256)
 
     def plot(self, covid19_data):
 
@@ -194,13 +222,6 @@ class Covid19Data:
         d_time = np.log(2.) / slope  # doubling time
         R0 = np.exp(slope) - 1 #daily reproductive number
 
-        plot_title = "Linear Fit of " + \
-                        "log cases $N=Ce^{bt}$ with " + \
-                        "$b=$%.3f day$^{-1}$ (red, %s)" % (slope, self.location) + "\n" + \
-                        "Coefficient of determination (R-Squared)=%.3f" % R + "\n" + \
-                        "Population Doubling time: %.2f days" % d_time + "\n" + \
-                        "Estimated Daily $R_0 (Reproductive Number)=$%.2f" % R0
-
         print('Slope value %.3f' %slope)
         print('R Squared Value %.3f' %R)
         print('Doubling time %.2f' %d_time)
@@ -211,15 +232,127 @@ class Covid19Data:
         else:
             start_date_label = self.get_readable_date(self.csv_row_data.columns[covid19_data.start_date_col])
 
-        plt.plot(covid19_data.x01_plot_data, ln_y1, 'yo', covid19_data.x01_plot_data, poly1d_fn1(covid19_data.x01_plot_data), '--r', label=self.location)
-        plt.errorbar(covid19_data.x01_plot_data, ln_y1, yerr=y_error, fmt='o', color='r')
-        plt.grid()
-        plt.yticks(ln_y1, [np.int(y) for y in covid19_data.y01_plot_data])
-        plt.xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
-        plt.ylabel("Number of reported cases on given day DD")
-        plt.title("COVID-19 Epidemic in %s\n%s" %(self.location, plot_title))
-        plt.legend(loc="lower left")
+        if covid19_data.end_date_col is None:
+            end_date_label = self.get_readable_date(self.csv_row_data.columns[-1])
+        else:
+            end_date_label = self.get_readable_date(self.csv_row_data.columns[covid19_data.end_date_col])
+
+
+        gridsize = (3, 3)
+        fig = plt.figure(figsize=(10,10)) #width and height
+        ax1 = plt.subplot2grid(gridsize, (0, 0), colspan=2, rowspan=3)
+        ax2 = plt.subplot2grid(gridsize, (0, 2))
+        ax3 = plt.subplot2grid(gridsize, (1, 2))
+
+        # List Integer values to use build the plotted colou map images
+        IMAGE_ROW_VALUES = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190]
+
+        # Build the linear plot
+        ax1.plot(covid19_data.x01_plot_data, ln_y1, 'yo', covid19_data.x01_plot_data, poly1d_fn1(covid19_data.x01_plot_data), '--r', label=self.location)
+        ax1.errorbar(covid19_data.x01_plot_data, ln_y1, yerr=y_error, fmt='o', color='r')
+        ax1.grid()
+        ax1.set_yticks(ln_y1)
+        ax1.set_yticklabels([np.int(y) for y in covid19_data.y01_plot_data]) 
+
+        ax1.set_xlabel("Days for %s - Day 1 is %s" %(self.location, start_date_label))
+        ax1.set_ylabel("Number of reported cases on given day DD")
+
+        ax1_title = "Linear Fit of " + \
+                        "log cases $N=Ce^{bt}$ with " + \
+                        "$b=$%.3f day$^{-1}$ (red, %s) and t in days\n" % (slope, self.location) + \
+                        "Coefficient of determination (R-Squared)=%.3f" % R + " and Estimated Daily $R_0 (Reproductive Number)=$%.2f" % R0
+
+        ax1.set_title(ax1_title)
+
+        ax1.legend(loc="lower right")
+        
+
+        #Very steep rise in infections
+        if slope > 0.1:
+            scale_offset = 0.85
+        #Steep curve
+        elif slope > 0.05 and slope <= 0.1:
+            scale_offset = 0.6
+        #Most countries are here and flattening their infection rates
+        elif slope >= 0.009 and slope < 0.05:
+            scale_offset = 0.38
+        #Very flat curve
+        elif slope > 0 and slope < 0.009:
+            scale_offset = 0.14
+
+        elif slope <= 0:
+            scale_offset = 0
+
+
+        slope_image = np.array([IMAGE_ROW_VALUES, IMAGE_ROW_VALUES])
+
+
+        #Show as shades of greys
+        slope_cmap = colors.LinearSegmentedColormap.from_list('custom grey', [(0.0, '#FFFFFF'), (0.5, '#C0C0C0'), (1.0 ,'#606060')] , N=256)
+
+        #Build the image showing slope of the curve
+
+        ax2.imshow(slope_image ,interpolation='nearest',  cmap=slope_cmap, aspect='auto')
+
+        ax2.xaxis.axes.annotate('%s:\nSlope of \nthe curve is %.3f' %(self.location, slope), ha="center", xy=(scale_offset - abs(slope) , 0), xycoords='axes fraction',
+            xytext=(scale_offset - slope, 0.5), textcoords='axes fraction', 
+            arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=10, va="bottom")
+
+        ax2.xaxis.axes.annotate('Slope b = 0\nCompletely\nFlat Curve',  xy=(0, 0), xycoords='axes fraction', 
+            xytext=(0.2, 0.1), textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=10, va="bottom")
+ 
+        ax2.xaxis.axes.annotate('Steep\n Curve', xy=(1, 0), xycoords='axes fraction', xytext=(0.8,0.1), #Provide a bit offset for the text, so not to overlap axis boundary 
+            textcoords='axes fraction', 
+            arrowprops=dict(arrowstyle="-|>", facecolor='black'), 
+            fontsize=10)
+
+        ax2.xaxis.set_visible(False)
+        ax2.yaxis.set_visible(False)
+        ax2.set_title('Infection\'s Exponential Curve Slope $b=$%.3f day$^{-1}$:' % (slope))
+
+        #Build doubling timeimage
+        doubling_time_cmap = colors.LinearSegmentedColormap.from_list('custom roy', self.get_doubling_time_cmap(d_time) , N=256)
+        dtime_image = np.array([IMAGE_ROW_VALUES, IMAGE_ROW_VALUES])
+        ax3.imshow(dtime_image ,interpolation='nearest',  cmap=doubling_time_cmap, aspect='auto')
+
+        #Determine location and label for doubling time at 60 days
+        if d_time > 60:
+            dtime_60_loc = 60/d_time
+            dtime_60_label = dtime_60_loc
+            dtime_loc = 1.0
+        elif d_time <= 60 and d_time >= 50:
+            dtime_60_loc = 1.0
+            #Allow for small offset from right boundary of axis.
+            dtime_60_label = 0.75
+            dtime_loc = d_time/60
+        elif d_time < 50 and d_time > 0:
+            dtime_60_loc = 1.0
+            dtime_60_label = 0.75
+            dtime_loc = d_time/60
+        elif d_time < 0:
+            dtime_60_loc = 1.0
+            dtime_60_label = 0.75
+            dtime_loc = -0.08
+
+
+        ax3.xaxis.axes.annotate('%s:\nDoubling Time is %.1f days' %(self.location, d_time), ha="center", xy=(dtime_loc, 0), xytext=(0.5, 0.6), 
+            xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=10, va="bottom")
+
+        ax3.xaxis.axes.annotate('Doubling Time\n at 1 day\n(Very Fast Virus Growth)',  xy=(0, 0), xycoords='axes fraction', 
+            xytext=(0.2, 0.15), textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=10, va="bottom")
+ 
+        ax3.xaxis.axes.annotate('Doubling Time\n at 60 days', xy=(dtime_60_loc, 0), xycoords='axes fraction', xytext=(dtime_60_label,0.37), #Provide a bit offset for the text  
+            textcoords='axes fraction', 
+            arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=10, va="bottom")
+        ax3.xaxis.set_visible(False)
+        ax3.yaxis.set_visible(False)
+
+        ax3.set_title('Population Doubling time of Infections:')
+
+        date_info = '%s - %s' %(start_date_label, end_date_label) 
+        plt.suptitle('COVID-19 Epidemic in %s \n%s' %(self.location, date_info), fontsize=16)
         plt.show()
+
 
 def main():
 
@@ -270,8 +403,8 @@ def main():
             data = Covid19Data(args.country_region, args.url, province_state_selected = False)
         
         start_and_end_dates = data.set_start_end_dates(start_date, end_date)
-        x_y_start_data = data.get_covid19_data(start_and_end_dates)
-        data.plot(x_y_start_data)
+        x_y_dates = data.get_covid19_data(start_and_end_dates)
+        data.plot(x_y_dates)
 
 if __name__ == '__main__':
     main()
