@@ -5,7 +5,7 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 * This tool shows a linear fit of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, with analysis of exponential growth parameters. It is useful for analyzing the start of the Covid-19 Pandemic at the country-level or at province/state level.
 
-* Example of South Korea COVID-19 cases in late April, 2020. (__Click to view Enlarged Image__). South Korea's Curve is Very Flat! 
+* Example of South Korea COVID-19 cases in late April, 2020 (__Click to view Enlarged Image__). South Korea's Curve is Very Flat! 
 ![South Korea](example_plots/South_Korea_Late_April_2020.png "Click to see enlarged South Korea plot image")
 
 * It analyzes the COVID-19 ((SARS-CoV-2) time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of steepening or flattening of the curve (N=Ce^(bt)) at different time periods, daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the steepness or flatness of the curve different time periods.
