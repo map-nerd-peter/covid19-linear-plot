@@ -259,7 +259,7 @@ class Covid19Data:
 
         ax1_title = "Linear Fit of " + \
                         "log cases $N=Ce^{bt}$ with " + \
-                        "$b=$%.3f day$^{-1}$ (red, %s) and t in days\n" % (slope, self.location) + \
+                        "$b=$%.3f day$^{-1}$ (red, %s) and $t$ in days\n" % (slope, self.location) + \
                         "Coefficient of determination (R-Squared)=%.3f" % R + " and Estimated Daily $R_0 (Reproductive Number)=$%.2f" % R0
 
         ax1.set_title(ax1_title)
@@ -268,24 +268,25 @@ class Covid19Data:
         
 
         #Very steep rise in infections
-        if slope > 0.1:
+        if slope > 0.12:
             scale_offset = 0.85
         #Steep curve
-        elif slope > 0.05 and slope <= 0.1:
-            scale_offset = 0.6
+        elif slope > 0.09 and slope <= 0.12:
+            scale_offset = 0.7
+        #Curve is a bit steep 
+        elif slope > 0.05 and slope <= 0.09:
+            scale_offset = 0.55
         #Most countries are here and flattening their infection rates
         elif slope >= 0.009 and slope < 0.05:
             scale_offset = 0.38
         #Very flat curve
         elif slope > 0 and slope < 0.009:
             scale_offset = 0.14
-
+        #Downward revision of cases
         elif slope <= 0:
             scale_offset = 0
 
-
         slope_image = np.array([IMAGE_ROW_VALUES, IMAGE_ROW_VALUES])
-
 
         #Show as shades of greys
         slope_cmap = colors.LinearSegmentedColormap.from_list('custom grey', [(0.0, '#FFFFFF'), (0.5, '#C0C0C0'), (1.0 ,'#606060')] , N=256)
@@ -294,8 +295,8 @@ class Covid19Data:
 
         ax2.imshow(slope_image ,interpolation='nearest',  cmap=slope_cmap, aspect='auto')
 
-        ax2.xaxis.axes.annotate('%s:\nSlope of \nthe curve is %.3f' %(self.location, slope), ha="center", xy=(scale_offset - abs(slope) , 0), xycoords='axes fraction',
-            xytext=(scale_offset - slope, 0.5), textcoords='axes fraction', 
+        ax2.xaxis.axes.annotate('%s:\nSlope of \nthe curve is %.3f' %(self.location, slope), ha="center", xy=(scale_offset+0.001*slope, 0), xycoords='axes fraction',
+            xytext=(0.5, 0.5), textcoords='axes fraction', 
             arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=10, va="bottom")
 
         ax2.xaxis.axes.annotate('Slope b = 0\nCompletely\nFlat Curve',  xy=(0, 0), xycoords='axes fraction', 
