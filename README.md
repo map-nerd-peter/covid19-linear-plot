@@ -12,6 +12,8 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 * This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
+* The 2 smaller charts on the right side use color scales to show strength of the curve's steepness and the speed of COVID-19 doubling time, and are good ways to assess efforts to "flatten the curve". 
+
 * __Example Command, to obtain plot of a province or state:__
 
     `python covid19_linear_plot.py --province_state Quebec --url https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv --start_date Feb/29/2020 --end_date Mar/31/2020`
