@@ -238,11 +238,13 @@ class Covid19Data:
             end_date_label = self.get_readable_date(self.csv_row_data.columns[covid19_data.end_date_col])
 
 
-        gridsize = (3, 3)
+        gridsize = (2, 2)
         fig = plt.figure(figsize=(10,10)) #width and height
-        ax1 = plt.subplot2grid(gridsize, (0, 0), colspan=2, rowspan=3)
-        ax2 = plt.subplot2grid(gridsize, (0, 2))
-        ax3 = plt.subplot2grid(gridsize, (1, 2))
+        ax1 = plt.subplot2grid(gridsize, (0, 0), colspan=1, rowspan=3)
+        ax2 = plt.subplot2grid(gridsize, (0, 1))
+        ax3 = plt.subplot2grid(gridsize, (1, 1))
+        
+        
 
         # List Integer values to use build the plotted colou map images
         IMAGE_ROW_VALUES = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190]
@@ -260,10 +262,10 @@ class Covid19Data:
         ax1_title = "Linear Fit of " + \
                         "log cases $N=Ce^{bt}$ with " + \
                         "$b=$%.3f day$^{-1}$ (red, %s) and $t$ in days\n" % (slope, self.location) + \
-                        "Coefficient of determination (R-Squared)=%.3f" % R + " and Estimated Daily $R_0 (Reproductive Number)=$%.2f" % R0
+                        "Coef. of Determination $R^{2}$=%.2f" % R + " and Est. Daily $R_0$ (Reproductive Number)=%.2f" % R0
 
         ax1.set_title(ax1_title)
-
+        ax1.title.set_fontsize(11.5)
         ax1.legend(loc="lower right")
         
 
@@ -286,7 +288,7 @@ class Covid19Data:
         elif slope <= 0:
             scale_offset = 0
 
-        slope_image = np.array([IMAGE_ROW_VALUES, IMAGE_ROW_VALUES])
+        slope_image = np.array([IMAGE_ROW_VALUES])
 
         #Show as shades of greys
         slope_cmap = colors.LinearSegmentedColormap.from_list('custom grey', [(0.0, '#FFFFFF'), (0.5, '#C0C0C0'), (1.0 ,'#606060')] , N=256)
@@ -297,23 +299,24 @@ class Covid19Data:
 
         ax2.xaxis.axes.annotate('%s:\nSlope of \nthe curve is %.3f' %(self.location, slope), ha="center", xy=(scale_offset+0.001*slope, 0), xycoords='axes fraction',
             xytext=(0.5, 0.5), textcoords='axes fraction', 
-            arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=10, va="bottom")
+            arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=9.5, va="bottom")
 
         ax2.xaxis.axes.annotate('Slope b = 0\nCompletely\nFlat Curve',  xy=(0, 0), xycoords='axes fraction', 
-            xytext=(0.2, 0.1), textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=10, va="bottom")
+            xytext=(0.1, 0.1), textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=9.5, va="bottom")
  
-        ax2.xaxis.axes.annotate('Steep\n Curve', xy=(1, 0), xycoords='axes fraction', xytext=(0.8,0.1), #Provide a bit offset for the text, so not to overlap axis boundary 
+        ax2.xaxis.axes.annotate('Steep\n Curve', xy=(1, 0), xycoords='axes fraction', xytext=(0.9,0.1), #Provide a bit offset for the text, so not to overlap axis boundary 
             textcoords='axes fraction', 
             arrowprops=dict(arrowstyle="-|>", facecolor='black'), 
-            fontsize=10)
+            fontsize=9.5)
 
         ax2.xaxis.set_visible(False)
         ax2.yaxis.set_visible(False)
         ax2.set_title('Infection\'s Exponential Curve Slope $b=$%.3f day$^{-1}$:' % (slope))
+        ax2.title.set_fontsize(11.5)
 
         #Build doubling timeimage
         doubling_time_cmap = colors.LinearSegmentedColormap.from_list('custom roy', self.get_doubling_time_cmap(d_time) , N=256)
-        dtime_image = np.array([IMAGE_ROW_VALUES, IMAGE_ROW_VALUES])
+        dtime_image = np.array([IMAGE_ROW_VALUES])
         ax3.imshow(dtime_image ,interpolation='nearest',  cmap=doubling_time_cmap, aspect='auto')
 
         #Determine location and label for doubling time at 60 days
@@ -324,34 +327,36 @@ class Covid19Data:
         elif d_time <= 60 and d_time >= 50:
             dtime_60_loc = 1.0
             #Allow for small offset from right boundary of axis.
-            dtime_60_label = 0.75
+            dtime_60_label = 0.80
             dtime_loc = d_time/60
         elif d_time < 50 and d_time > 0:
             dtime_60_loc = 1.0
-            dtime_60_label = 0.75
+            dtime_60_label = 0.80
             dtime_loc = d_time/60
         elif d_time < 0:
             dtime_60_loc = 1.0
-            dtime_60_label = 0.75
+            dtime_60_label = 0.80
             dtime_loc = -0.08
 
 
         ax3.xaxis.axes.annotate('%s:\nDoubling Time is %.1f days' %(self.location, d_time), ha="center", xy=(dtime_loc, 0), xytext=(0.5, 0.6), 
-            xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=10, va="bottom")
+            xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="simple", facecolor='black'), fontsize=9.5, va="bottom")
 
         ax3.xaxis.axes.annotate('Doubling Time\n at 1 day\n(Very Fast Virus Growth)',  xy=(0, 0), xycoords='axes fraction', 
-            xytext=(0.2, 0.15), textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=10, va="bottom")
+            xytext=(0.1, 0.15), textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=9.5, va="bottom")
  
         ax3.xaxis.axes.annotate('Doubling Time\n at 60 days', xy=(dtime_60_loc, 0), xycoords='axes fraction', xytext=(dtime_60_label,0.37), #Provide a bit offset for the text  
             textcoords='axes fraction', 
-            arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=10, va="bottom")
+            arrowprops=dict(arrowstyle="-|>", facecolor='black'), fontsize=9.5, va="bottom")
         ax3.xaxis.set_visible(False)
         ax3.yaxis.set_visible(False)
 
         ax3.set_title('Population Doubling time of Infections:')
-
+        ax3.title.set_fontsize(11.5)
+        
         date_info = '%s - %s' %(start_date_label, end_date_label) 
         plt.suptitle('COVID-19 Epidemic in %s \n%s' %(self.location, date_info), fontsize=16)
+        #plt.rc('axes', titlesize=7) 
         plt.show()
 
 
