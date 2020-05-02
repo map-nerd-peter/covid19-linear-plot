@@ -5,7 +5,7 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 * This tool shows a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
 
-* Example of South Korea COVID-19 cases in late April, 2020 (very flat curve) __(Click to view Enlarged Image):__ 
+* Example of South Korea COVID-19 cases in late April, 2020 (very flat curve). __(Click to view Enlarged Image):__ 
 
 ![South Korea](example_plots/South_Korea_Late_April_2020.png "Click to see enlarged South Korea plot image")
 
@@ -41,7 +41,7 @@ Start and end dates should be entered in the format of month/day/year or month-d
 
 * __Example plots of COVID-19 cases in Quebec, Canada, based on different dates:__
 
-  __Quebec reported cases for March 1 - 23, 2020__ show  b value(curve's slope value) of 0.286 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.42 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown. This period also coincided with many Quebec residents [travelling on Spring Break vacations with their families and a rise in COVID-19 infections.](https://www.theglobeandmail.com/canada/article-why-quebecs-coronavirus-cases-have-skyrocketed/)
+  __Quebec reported cases for March 1 - 23, 2020__ show  b value(curve's slope value) of 0.286 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown. This period also coincided with many Quebec residents [travelling on Spring Break vacations with their families and a rise in COVID-19 infections.](https://www.theglobeandmail.com/canada/article-why-quebecs-coronavirus-cases-have-skyrocketed/)
 
   ![Quebec1](example_plots/Quebec_March_1_23_2020.png "Click to see enlarged Quebec plot image")
 
