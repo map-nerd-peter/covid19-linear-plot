@@ -3,12 +3,13 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-* This tool shows a linear fit of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, with analysis of exponential growth parameters. It is useful for analyzing the start of the Covid-19 Pandemic at the country-level or at province/state level.
+* This tool shows a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
 
-* Example of South Korea COVID-19 cases in late April, 2020 (__Click to view Enlarged Image__). South Korea's Curve is Very Flat! 
+* Example of South Korea COVID-19 cases in late April, 2020 (very flat curve) __(Click to view Enlarged Image):__ 
+
 ![South Korea](example_plots/South_Korea_Late_April_2020.png "Click to see enlarged South Korea plot image")
 
-* It analyzes the COVID-19 ((SARS-CoV-2) time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of steepening or flattening of the curve (N=Ce^(bt)) at different time periods, daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the steepness or flatness of the curve different time periods.
+* It analyzes the COVID-19 ((SARS-CoV-2) time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of steepening or flattening of the curve (N=Ce^(bt)) at different time periods, estimated daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the steepness or flatness of the curve at different time periods.
 
 * This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
@@ -36,7 +37,7 @@ Start and end dates should be entered in the format of month/day/year or month-d
 
 * __Software Requirements:__ 
 
-Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. 
+    Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. 
 
 * __Example plots of COVID-19 cases in Quebec, Canada, based on different dates:__
 
