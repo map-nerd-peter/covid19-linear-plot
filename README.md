@@ -31,14 +31,6 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
     
     `python covid19_linear_plot.py -h`
 
-* Start and End date parameters are optional.  You must enter start and end dates that fall within the date range of the time series data. See data source at 
-https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
-Start and end dates should be entered in the format of month/day/year or month-day-year. It's best to enter time periods of 7 to 10 days to obtain a good line fit, but longer time periods will also work.
-
-* __Software Requirements:__ 
-
-    Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. 
-
 * __Example plots of COVID-19 cases in Quebec, Canada, based on different dates:__
 
   __Quebec reported cases for March 1 - 23, 2020__ show  b value(curve's slope value) of 0.286 (higher value indicates sharper/faster exponential growth) and population doubling time of 2.4 days. Fitted line of logarithmic data and Coefficient of determination (R-Squared) are also shown. This period also coincided with many Quebec residents [travelling on Spring Break vacations with their families and a rise in COVID-19 infections.](https://www.theglobeandmail.com/canada/article-why-quebecs-coronavirus-cases-have-skyrocketed/)
@@ -55,3 +47,11 @@ Start and end dates should be entered in the format of month/day/year or month-d
   ](https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv)  This plot shows the 2 week period starting from March 21, 2020 and indicates the curve flattening with a b value (slope value) of 0.059 and a population doubling time greater than 11 days. 
   
   ![Italy](example_plots/Italy_March_21_April_5_2020.png "Click to see enlarged Italy plot image")
+
+* Start and End date parameters are optional.  You must enter start and end dates that fall within the date range of the time series data. See data source at 
+https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+Start and end dates should be entered in the format of month/day/year or month-day-year. It's best to enter time periods of 7 to 10 days to obtain a good line fit, but longer time periods will also work.
+
+* __Software Requirements:__ 
+
+    Python 3 (on Windows, Mac, or Linux) and Python libraries numpy, matplotlib and Pandas. 
