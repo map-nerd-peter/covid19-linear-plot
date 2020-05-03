@@ -385,17 +385,10 @@ def main():
                             help='End date in the COVID-19 data, can be entered as M-DD-YY such as 1-31-20 for January 31, 2020')    
         args = parser.parse_args()
 
-        if not args.province_state and not args.url or not args.country_region and not args.url:
+        if not (args.province_state or args.country_region) or not args.url:
             print('Please provide a URL of the data file plus location (province, state, region, or country).')
             print('Instructions are available by typing: python covid19_linear_plot.py --help')
-            return
-        if not args.url:
-            print('Please provide the URL of the data file.')
-            print('Instructions are available by typing: python covid19_linear_plot.py --help')      
-            return            
-        if not args.province_state and not args.country_region:
-            print('Please provide a province/state or country/region.')
-            print('Instructions are available by typing: python covid19_linear_plot.py --help')            
+            print('Example commands and more info available at https://github.com/map-nerd-peter/covid19-linear-plot')
             return
         start_date = None
         end_date = None
