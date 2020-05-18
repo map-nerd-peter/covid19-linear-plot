@@ -7,6 +7,7 @@ from dateutil.parser import parse
 import pandas as pd
 import platform
 import collections
+from enum import Enum
 """
 
 COVID-19 (Coronavirus) Linear Plot Tool With Start and End Dates to Analyze Curve Flattening
@@ -17,23 +18,30 @@ Special thanks to Valeriu Predoi for sharing statistical calculations and plotti
 in his Covid-19 Exponential Phase tool - https://github.com/valeriupredoi/COVID-19_LINEAR/.
 
 """
+
+# Define the type of location data based on Johns Hopkins COVID19 data schema
+class DataLocation(Enum):
+    province_state = 1
+    country_region = 2
+
 class Covid19Data:
 
-    def __init__(self, location, url, province_state_selected):
+    def __init__(self, location, url, data_location):
         """Constructor"""
 
         self._location = location
         self._url = url
+        self._data_location = data_location
         self._csv_date_format = None
 
         #Load the row that contains for specific state or province and its COVID-19 data
         df = pd.read_csv(url, error_bad_lines=False)
 
-        if province_state_selected:
+        if data_location == DataLocation.province_state:
             self._csv_row_data = df[df['Province/State'] == location]
 
         #Get country data
-        elif not province_state_selected:
+        elif data_location == DataLocation.country_region:
             self._csv_row_data = df[df['Country/Region'] == location].groupby('Country/Region').sum()
         
         # Remove the zero padding from single digit date values so it matches JHU data. e.g. Feb. 9 2020 is shown as 2/9/20 in the csv data.
@@ -47,6 +55,10 @@ class Covid19Data:
     @property
     def location(self):
         return self._location
+        
+    @property
+    def data_location(self):
+        return self._data_location
 
     @property
     def url(self):
@@ -166,14 +178,27 @@ class Covid19Data:
 
         if start_idx is not None and end_idx is None:
             covid19_data.y01_plot_data = self.csv_row_data.iloc[0,start_idx:]
-        elif start_idx is not None and end_idx is not None:
-            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, start_idx:end_idx]
-        elif start_idx is None and end_idx is not None:
-            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, :end_idx]
-        #No start date and end dates given.    
-        else:
-            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, 4:]
 
+        elif start_idx is not None and end_idx is not None:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, start_idx:end_idx+1]
+
+        elif start_idx is None and end_idx is not None and self.data_location == DataLocation.province_state:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0,4:end_idx+1]
+            start_idx = 4
+
+        elif start_idx is None and end_idx is not None and self.data_location == DataLocation.country_region:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0,2:end_idx+1]
+            start_idx = 2
+
+        #No start date and end dates given, but start date of dataset still needs to be defined at Jan. 22, 2020           
+        elif start_idx is None and end_idx is None and self.data_location == DataLocation.province_state:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0,4:]
+            start_idx = 4
+
+        elif start_idx is None and end_idx is None and self.data_location == DataLocation.country_region:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0,2:]
+            start_idx = 2
+            
         #This provides the days on the X axis, e.g. Day 1, 2, 3, 4, 5, etc.
         covid19_data.x01_plot_data = [np.float(x) for x in range(1, len(covid19_data.y01_plot_data)+1)]
 
@@ -204,7 +229,7 @@ class Covid19Data:
         # Plot data, using some of Valeriu Predoi's statistical calcuations and plotting code from https://github.com/valeriupredoi/COVID-19_LINEAR
 
         # ln_y1 is the natural log of y01_plot_data. y01_plot_data contains daily case values
-        ln_y1 = np.asarray([y if y<=0  else np.log(y) for y in covid19_data.y01_plot_data])
+        ln_y1 = np.asarray([y if int(y)<=0  else np.log(y) for y in covid19_data.y01_plot_data])
 
         print('Abbreviated output of Covid-19 Infection Values')
         print(covid19_data.y01_plot_data)
@@ -397,10 +422,10 @@ def main():
         if args.end_date:
             end_date = args.end_date
         if args.province_state and args.url:
-            data = Covid19Data(args.province_state, args.url, province_state_selected = True)
+            data = Covid19Data(args.province_state, args.url, DataLocation.province_state)
         elif args.country_region and args.url:
-            data = Covid19Data(args.country_region, args.url, province_state_selected = False)
-        
+            data = Covid19Data(args.country_region, args.url, DataLocation.country_region)
+
         start_and_end_dates = data.set_start_end_dates(start_date, end_date)
         x_y_dates = data.get_covid19_data(start_and_end_dates)
         data.plot(x_y_dates)
