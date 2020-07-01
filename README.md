@@ -3,13 +3,13 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-* This tool shows a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
+* This tool shows uses statistical analysis to do a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
 
 * Example of South Korea COVID-19 cases in late April, 2020 (very flat curve). __(Click to view Enlarged Image):__ 
 
 ![South Korea](example_plots/South_Korea_Late_April_2020.png "Click to see enlarged South Korea plot image")
 
-* It analyzes the COVID-19 ((SARS-CoV-2) time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of steepening or flattening of the curve (N=Ce^(bt)) at different time periods, estimated daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the steepness or flatness of the curve at different time periods.
+* It analyzes the COVID-19 (SARS-CoV-2) time series data provided by Johns Hopkins University Center for Systems Science and Engineering (https://github.com/CSSEGISandData/COVID-19). This tool runs in Python command line and it calculates exponent b value to indicate the level of steepening or flattening of the curve (N=Ce^(bt)) at different time periods, estimated daily reproductive rate, and population doubling time.  Different start and end times can be added to visualize the steepness or flatness of the curve at different time periods.
 
 * This tool builds on the statistical calculations and plotting analysis of [Valeriu Predoi's Covid-19 Exponential Phase tool](https://github.com/valeriupredoi/COVID-19_LINEAR/blob/master/README.md#Introduction). 
 
