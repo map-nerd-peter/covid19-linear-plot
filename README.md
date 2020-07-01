@@ -3,7 +3,7 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-* This tool shows uses statistical analysis to do a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
+* This tool uses statistical analysis to create a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
 
 * Example of South Korea COVID-19 cases in late April, 2020 (very flat curve). __(Click to view Enlarged Image):__ 
 
