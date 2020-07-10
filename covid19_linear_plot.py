@@ -23,12 +23,14 @@ in his Covid-19 Exponential Phase tool - https://github.com/valeriupredoi/COVID-
 class DataLocation(Enum):
     province_state = 1
     country_region = 2
+    world = 3
 
 class Covid19Data:
 
     def __init__(self, location, url, data_location):
         """Constructor"""
-
+        #index location of world row index, only used when we want world total
+        self.world_row_index = -1
         self._location = location
         self._url = url
         self._data_location = data_location
@@ -43,6 +45,15 @@ class Covid19Data:
         #Get country data
         elif data_location == DataLocation.country_region:
             self._csv_row_data = df[df['Country/Region'] == location].groupby('Country/Region').sum()
+            
+        #World data
+        elif data_location == DataLocation.world:
+
+            #Add a row at the bottom that has total global value 
+            df = df.append(df.sum(numeric_only=True), ignore_index=True)
+
+            self.world_row_index = df.shape[0]-1
+            self._csv_row_data = df
         
         # Remove the zero padding from single digit date values so it matches JHU data. e.g. Feb. 9 2020 is shown as 2/9/20 in the csv data.
         if platform.system() == 'Windows':
@@ -176,9 +187,17 @@ class Covid19Data:
         if start_end_dates[1] is not None:
             end_idx = start_end_dates[1]
 
-        if start_idx is not None and end_idx is None:
-            covid19_data.y01_plot_data = self.csv_row_data.iloc[0,start_idx:]
+        if start_idx is not None and end_idx is None and self.data_location == DataLocation.world:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[self.world_row_index, start_idx:]
 
+        elif start_idx is not None and end_idx is not None and self.data_location == DataLocation.world:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[self.world_row_index, start_idx:end_idx+1]
+
+        #works for prov/state or country/region
+        elif start_idx is not None and end_idx is None:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[0, start_idx:]
+
+        #works for prov/state or country/region
         elif start_idx is not None and end_idx is not None:
             covid19_data.y01_plot_data = self.csv_row_data.iloc[0, start_idx:end_idx+1]
 
@@ -189,6 +208,10 @@ class Covid19Data:
         elif start_idx is None and end_idx is not None and self.data_location == DataLocation.country_region:
             covid19_data.y01_plot_data = self.csv_row_data.iloc[0,2:end_idx+1]
             start_idx = 2
+            
+        elif start_idx is None and end_idx is not None and self.data_location == DataLocation.world:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[self.world_row_index,4:end_idx+1]
+            start_idx = 4   
 
         #No start date and end dates given, but start date of dataset still needs to be defined at Jan. 22, 2020           
         elif start_idx is None and end_idx is None and self.data_location == DataLocation.province_state:
@@ -198,6 +221,10 @@ class Covid19Data:
         elif start_idx is None and end_idx is None and self.data_location == DataLocation.country_region:
             covid19_data.y01_plot_data = self.csv_row_data.iloc[0,2:]
             start_idx = 2
+        
+        elif start_idx is None and end_idx is None and self.data_location == DataLocation.world:
+            covid19_data.y01_plot_data = self.csv_row_data.iloc[self.world_row_index,4:]
+            start_idx = 4  
             
         #This provides the days on the X axis, e.g. Day 1, 2, 3, 4, 5, etc.
         covid19_data.x01_plot_data = [np.float(x) for x in range(1, len(covid19_data.y01_plot_data)+1)]
@@ -396,6 +423,11 @@ def main():
                             '--country_region',
                             type=str,
                             help='Name of country or region to obtain the COVID-19 data')
+        parser.add_argument('-w',
+                            '--world',
+                            action='store_const',
+                            const = 'The World',
+                            help='The entire world')
         parser.add_argument('-u',
                             '--url',
                             type=str,
@@ -410,8 +442,8 @@ def main():
                             help='End date in the COVID-19 data, can be entered as M-DD-YY such as 1-31-20 for January 31, 2020')    
         args = parser.parse_args()
 
-        if not (args.province_state or args.country_region) or not args.url:
-            print('Please provide a URL of the data file plus location (province, state, region, or country).')
+        if not (args.province_state or args.country_region or args.world) or not args.url:
+            print('Please provide a URL of the data file plus location (province, state, region, or country, or type w for the world,).')
             print('Instructions are available by typing: python covid19_linear_plot.py --help')
             print('Example commands and more info available at https://github.com/map-nerd-peter/covid19-linear-plot')
             return
@@ -425,6 +457,8 @@ def main():
             data = Covid19Data(args.province_state, args.url, DataLocation.province_state)
         elif args.country_region and args.url:
             data = Covid19Data(args.country_region, args.url, DataLocation.country_region)
+        elif args.world and args.url:
+            data = Covid19Data(args.world, args.url, DataLocation.world)
 
         start_and_end_dates = data.set_start_end_dates(start_date, end_date)
         x_y_dates = data.get_covid19_data(start_and_end_dates)
