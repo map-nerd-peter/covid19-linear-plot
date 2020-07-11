@@ -3,7 +3,7 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-* This tool uses statistical analysis to create a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level.
+* This tool uses statistical analysis to create a linear fit graph of logarithmic COVID-19 (Coronavirus) historical data from Johns Hopkins University, and can analyze exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level. **New World Feature (Added in July, 2020):** You can also  plot the Covid-19 data for the entire world.
 
 * Example of South Korea COVID-19 cases in late April, 2020 (very flat curve). __(Click to view Enlarged Image):__ 
 
@@ -27,6 +27,14 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
     
     `python covid19_linear_plot.py -c US -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv -s Mar/01/2020 -e Mar/31/2020`
 
+    __Plot the data for the entire world:__
+    
+    `python covid19_linear_plot.py --world -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv -s Mar/01/2020 -e Mar/15/2020`
+
+    __Abbreviated command to plot the data for the entire world:__
+    
+    `python covid19_linear_plot.py -w -u https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv -s Mar/01/2020 -e Mar/15/2020`
+
     __For help/instructions:__
     
     `python covid19_linear_plot.py -h`
@@ -47,6 +55,12 @@ COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve F
   ](https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv)  This plot shows the 2 week period starting from March 21, 2020 and indicates the curve flattening with a b value (slope value) of 0.059 and a population doubling time greater than 11 days. 
   
   ![Italy](example_plots/Italy_March_21_April_5_2020.png "Click to see enlarged Italy plot image")
+
+* __World Plot of COVID-19 for the end of June 2020:__
+
+World cases continue to climb from June 20 to 30, 2020. The rate of infection increases in this time period in June 2020 shows a doubling of reported infections every 39 days.  
+  
+  ![World](example_plots/World_June_20_30_2020.png "Click to see enlarged World plot image")
 
 * Start and End date parameters are optional.  You must enter start and end dates that fall within the date range of the time series data. See data source at 
 https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
