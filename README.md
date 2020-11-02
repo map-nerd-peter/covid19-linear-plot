@@ -1,4 +1,4 @@
-COVID-19 (Coronavirus) Plotting Tool With Start and End Dates to Analyze Curve Flattening
+COVID-19 (Coronavirus) Analysis Tool With Start and End Dates to Analyze Curve Flattening
 ==========================================================================================
 
 * This tool uses statistical analysis to create a linear fit graph of logarithmic COVID-19 (Coronavirus) data from Johns Hopkins University and analyzes exponential growth. It is useful for analyzing the Covid-19 Pandemic at the country-level or at province/state level, or at the world (global) level. 
